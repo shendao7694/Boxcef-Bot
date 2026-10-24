@@ -1,0 +1,18 @@
+{
+  "napcat": {
+    "wsUrl": "ws://127.0.0.1:7601",
+    "token": "2WK4-BTmqGzEy7oE"
+  },
+  "manager": {
+    "port": 7600,
+    "password": "7694.admin.cn"
+  },
+  "sign": {
+    "coinMin": 50,
+    "coinMax": 200
+  },
+  "reply": {
+    "enabled": true ,
+    "blacklist": ["cat","audio"]
+  }
+}

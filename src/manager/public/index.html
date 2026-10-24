@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bot Console</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div id="loginView" class="login-wrap">
+  <div class="login-box">
+    <div class="logo">◇</div>
+    <h1>Bot Console</h1>
+    <p class="hint">输入管理密码继续</p>
+    <input id="pwd" type="password" placeholder="••••••••" autocomplete="current-password">
+    <button id="loginBtn">进入</button>
+    <p id="loginMsg" class="err"></p>
+  </div>
+</div>
+
+<div id="appView" hidden>
+  <header class="topbar">
+    <div class="brand"><span class="logo">◇</span> Bot Console</div>
+    <nav class="pill-nav">
+      <button data-tab="sign">签到码</button>
+      <button data-tab="signed">已签到</button>
+      <button data-tab="emoji">Emoji</button>
+      <button data-tab="user">金币</button>
+      <button data-tab="allow">白名单</button>
+      <button data-tab="config">配置</button>
+    </nav>
+    <div class="top-actions">
+      <button id="logoutBtn" class="icon-btn" title="退出">⏻</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="pane-sign" class="pane" hidden>
+      <div class="grid">
+        <div class="tile tile-4">
+          <div class="tile-head">手动设置签到码</div>
+          <div class="tile-body">
+            <input id="sign-qq" class="flat-input" placeholder="QQ 号">
+            <input id="sign-code" class="flat-input" placeholder="签到码（留空清空）">
+            <button id="sign-set" class="btn">保存</button>
+          </div>
+        </div>
+        <div class="tile tile-8">
+          <div class="tile-head">已有签到码 <span id="sign-count" class="badge">0</span></div>
+          <div class="tile-body list" id="sign-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pane-signed" class="pane" hidden>
+      <div class="grid">
+        <div class="tile tile-12">
+          <div class="tile-head">今日已签到 <span id="signed-date" class="badge"></span></div>
+          <div class="tile-body list" id="signed-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pane-emoji" class="pane" hidden>
+      <div class="grid">
+        <div class="tile tile-12">
+          <div class="tile-head">
+            上传
+            <input id="emoji-file" type="file" accept="image/*" hidden>
+            <button class="btn small" onclick="document.getElementById('emoji-file').click()">选择文件</button>
+            <span id="emoji-filename" class="muted"></span>
+            <button id="emoji-upload" class="btn small primary">上传</button>
+          </div>
+        </div>
+        <div class="tile tile-12">
+          <div class="tile-head">图库 <span id="emoji-count" class="badge">0</span></div>
+          <div class="tile-body emoji-grid" id="emoji-grid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pane-user" class="pane" hidden>
+      <div class="grid">
+        <div class="tile tile-4">
+          <div class="tile-head">操作</div>
+          <div class="tile-body">
+            <input id="user-qq" class="flat-input" placeholder="QQ 号">
+            <input id="user-coin" class="flat-input" type="number" placeholder="设置为该金币数">
+            <button id="user-set" class="btn">设置</button>
+            <div class="divider"></div>
+            <input id="user-delta" class="flat-input" type="number" placeholder="增减量（正加负减）">
+            <button id="user-adjust" class="btn">增减</button>
+          </div>
+        </div>
+        <div class="tile tile-8">
+          <div class="tile-head">用户 <span id="user-count" class="badge">0</span></div>
+          <div class="tile-body list" id="user-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pane-allow" class="pane" hidden>
+      <div class="grid">
+        <div class="tile tile-6">
+          <div class="tile-head">允许的群组</div>
+          <div class="tile-body">
+            <div class="input-line">
+              <input id="allow-group-input" class="flat-input" placeholder="群号，* 为全部">
+              <button id="allow-group-add" class="btn">添加</button>
+            </div>
+            <div class="chips" id="allow-group-list"></div>
+          </div>
+        </div>
+        <div class="tile tile-6">
+          <div class="tile-head">允许私聊</div>
+          <div class="tile-body">
+            <div class="input-line">
+              <input id="allow-user-input" class="flat-input" placeholder="QQ 号，* 为全部">
+              <button id="allow-user-add" class="btn">添加</button>
+            </div>
+            <div class="chips" id="allow-user-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pane-config" class="pane" hidden>
+      <div class="grid">
+        <div class="tile tile-6">
+          <div class="tile-head">NapCat 连接</div>
+          <div class="tile-body">
+            <label class="flat-label">WS 地址<input id="cfg-ws" class="flat-input"></label>
+            <label class="flat-label">Token<input id="cfg-token" class="flat-input"></label>
+          </div>
+        </div>
+        <div class="tile tile-6">
+          <div class="tile-head">管理端</div>
+          <div class="tile-body">
+            <label class="flat-label">端口<input id="cfg-port" class="flat-input" type="number"></label>
+            <label class="flat-label">密码<input id="cfg-pwd" class="flat-input"></label>
+          </div>
+        </div>
+        <div class="tile tile-6">
+          <div class="tile-head">签到奖励</div>
+          <div class="tile-body">
+            <label class="flat-label">最小金币<input id="cfg-min" class="flat-input" type="number"></label>
+            <label class="flat-label">最大金币<input id="cfg-max" class="flat-input" type="number"></label>
+          </div>
+        </div>
+        <div class="tile tile-6">
+          <div class="tile-head">保存</div>
+          <div class="tile-body">
+            <button id="cfg-save" class="btn primary">写入配置</button>
+            <p class="muted">端口 / 密码变更需重启服务。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-box">
+      <div id="modal-title" class="modal-title"></div>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-actions">
+        <button id="modal-cancel" class="btn">取消</button>
+        <button id="modal-ok" class="btn primary">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+
+<script src="/main.js"></script>
+</body>
+</html>

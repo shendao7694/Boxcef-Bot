@@ -1,0 +1,14 @@
+{
+  "action": "send_group_msg",
+  "params": {
+    "group_id": 1107448537,
+    "message": [
+      {
+        "type": "record",
+        "data": {
+          "file": "/opt/Serve/QQBot/src/data/assets/audio2.mp3"
+        }
+      }
+    ]
+  }
+}
